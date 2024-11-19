@@ -4,16 +4,17 @@ import uuid
 import json
 from random import choice, randint
 
+KAFKA_BROKER = "192.168.64.6:9092"
+TOPIC = "logs"
+
+producer = Producer({'bootstrap.servers': KAFKA_BROKER})
+
 SERVICE_NAME = "ServiceNode1"
 NODE_ID = str(uuid.uuid4())
-TOPIC = "logs"  
-
-KAFKA_BROKER = "localhost:9092"
-producer = Producer({'bootstrap.servers': KAFKA_BROKER})
 
 def send_to_kafka(topic, message):
     producer.produce(topic, json.dumps(message).encode('utf-8'))
-    producer.flush()
+    producer.flush()  
 
 def register_node():
     registration_message = {
@@ -23,7 +24,7 @@ def register_node():
         "timestamp": time.time()
     }
     send_to_kafka(TOPIC, registration_message)
-    print(f"Node {SERVICE_NAME} registered with ID {NODE_ID}")
+    print("Node Registered and Sent to Kafka")
 
 def send_heartbeat():
     heartbeat_message = {
@@ -33,7 +34,7 @@ def send_heartbeat():
         "timestamp": time.time()
     }
     send_to_kafka(TOPIC, heartbeat_message)
-    print("Heartbeat sent.")
+    print("Heartbeat Sent to Kafka")
 
 def generate_log():
     log_levels = ["INFO", "WARN", "ERROR"]
@@ -43,7 +44,7 @@ def generate_log():
         "node_id": NODE_ID,
         "log_level": log_level,
         "message_type": "LOG",
-        "message": f"This is a {log_level} log.",
+        "message": f"This is a {log_level} log",
         "service_name": SERVICE_NAME,
         "timestamp": time.time()
     }
@@ -62,11 +63,11 @@ def generate_log():
         })
 
     send_to_kafka(TOPIC, log_message)
-    print(f"{log_level} log sent.")
-
+    print(f"{log_level} Log Sent to Kafka")
 
 if __name__ == "__main__":
     register_node()
+
     while True:
         send_heartbeat()
         generate_log()
