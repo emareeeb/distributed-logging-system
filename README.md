@@ -1,5 +1,3 @@
-# EC-Team-66-distributed-logging-system
-
 ### Note on File Upload Restrictions
 
 Due to GitHub's **file size limits** (Global: 25MB soft limit, 50MB hard limit; Local: 100MB), we were unable to upload the compressed versions of the required tools: **Kafka**, **Kibana**, and **Elasticsearch**. A screenshot demonstrating this limitation has been provided for reference. 
